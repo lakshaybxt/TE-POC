@@ -1,0 +1,13 @@
+- Generally we use HTTPs for secure communication.
+- HTTPs ensures all sensitive data is encrypted both in transit and at rest.
+- In production we use real certificate issued by a trusted CA (like Let’s Encrypt).
+- We run or application behind a reverse proxy (like Nginx) which handles SSL termination.
+
+Cons of using Encrypting by Base64:
+- Base64 is not an encryption method; it is an encoding scheme. It does not provide any security.
+- Anyone who intercepts Base64 encoded data can easily decode it back to its original form.
+- Base64 does not protect against man-in-the-middle attacks, eavesdropping, or data tampering.
+
+So what we can use instead of Base64 for secure communication is:
+- Use HTTPS (HTTP over SSL/TLS) for secure communication over the network.
+- Use strong encryption algorithms like AES (Advanced Encryption Standard) for encrypting sensitive data.
