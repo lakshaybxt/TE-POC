@@ -142,7 +142,7 @@ public class LaptopController {
                 product.getFeatures().getBattery()
         );
 
-        ProductResponse responseDto = new ProductResponse(
+        return new ProductResponse(
                 product.getId(),
                 product.getName(),
                 product.getSku(),
@@ -151,7 +151,6 @@ public class LaptopController {
                 featureResponse,
                 product.getDescription()
         );
-        return responseDto;
     }
 
     /**

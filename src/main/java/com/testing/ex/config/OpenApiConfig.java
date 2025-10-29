@@ -17,10 +17,10 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Example API")
+                        .title("Testing API")
                         .version("v1")
                         .description("API documentation for the Example project")
-                        .contact(new Contact().name("Dev Team").email("dev@localhost"))
+                        .contact(new Contact().name("Testing experts").email("dev@localhost"))
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
                 );
     }
