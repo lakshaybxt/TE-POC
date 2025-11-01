@@ -1,8 +1,6 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-
 -- Main user table
 CREATE TABLE if NOT EXISTS users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id CHAR(36) PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -10,30 +8,31 @@ CREATE TABLE if NOT EXISTS users (
     verification_code VARCHAR(255),
     verification_expiration TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRET_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- Main products table
-CREATE TABLE products (
-    id BIGSERIAL PRIMARY KEY,
+-- Products table
+CREATE TABLE IF NOT EXISTS products (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tenant_id VARCHAR(36) NOT NULL,
     name VARCHAR(150) NOT NULL,
     sku VARCHAR(80) NOT NULL,
     category VARCHAR(60) NOT NULL,
-    price NUMERIC(12, 2) NOT NULL,
+    price DECIMAL(12, 2) NOT NULL,
     description VARCHAR(2000),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_products_tenant_sku UNIQUE (tenant_id, sku)
 );
 
--- Element collection table for features (Map<String, String>)
-CREATE TABLE product_features (
-    product_id BIGINT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+-- Features map table (for @ElementCollection)
+CREATE TABLE IF NOT EXISTS product_features (
+    product_id BIGINT NOT NULL,
     feature_key VARCHAR(255) NOT NULL,
     features VARCHAR(255),
-    PRIMARY KEY (product_id, feature_key)
+    PRIMARY KEY (product_id, feature_key),
+    CONSTRAINT fk_product_features_product FOREIGN KEY (product_id)
+    REFERENCES products(id) ON DELETE CASCADE
 );
 
 -- Indexes

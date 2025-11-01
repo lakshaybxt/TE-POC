@@ -1,0 +1,38 @@
+---
+name: Flyway Migration
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build project
+        run: mvn -B clean package
+
+      - name: Run Flyway validate
+        run: mvn -B flyway:validate
+        env:
+          FLYWAY_URL: jdbc:mysql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/productDB
+          FLYWAY_USER: ${{ secrets.DB_USER }}
+          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+      - name: Run Flyway migrate
+        run: mvn -B flyway:migrate
+        env:
+          FLYWAY_URL: jdbc:mysql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/productDB
+          FLYWAY_USER: ${{ secrets.DB_USER }}
+          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
