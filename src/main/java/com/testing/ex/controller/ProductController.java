@@ -72,17 +72,17 @@ public class ProductController {
    *
    * @param userId the authenticated user's id injected as a request attribute
    * @param dto    create request payload containing product fields
-   * @return the created product as a response DTO
+   * @return the created product as a response
    */
   @Operation(summary = "Create product", description = "Create a new product for the "
       + "authenticated user")
   @PostMapping
-  public ResponseEntity<ProductResponse> create(
+  public ResponseEntity<?> create(
       @RequestAttribute("userId") String userId,
       @Validated @RequestBody CreateProductRequest dto
   ) {
     ProductResponse created = productService.createProduct(userId, dto);
-    return ResponseEntity.ok(created);
+    return ResponseEntity.ok("Product created successfully!");
   }
 
   /**

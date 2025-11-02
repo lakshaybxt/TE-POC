@@ -44,15 +44,14 @@ public class UserController {
    * Register a new user account.
    *
    * @param request validated registration payload
-   * @return the created User entity
+   * @return the created User
    */
   @Operation(summary = "Register a new user", description = "Creates a new user account. Returns "
       + "the saved user entity.")
   @PostMapping(path = "/register")
   public ResponseEntity<?> register(@Valid @RequestBody RegisterUserDto request) {
     User user = authenticationService.signup(request);
-    // TODO: Loin Response Filter will not send password & encrypt the stored verification code.
-    return ResponseEntity.ok(user);
+    return ResponseEntity.ok("User registered successfully. Please check your email for verification code." + user.getVerificationCode());
   }
 
   /**
